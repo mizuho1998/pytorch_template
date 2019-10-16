@@ -24,8 +24,8 @@ from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 from opt import parse_opts
-from model import C3D
-from dataset import Dataset
+from model.model import C3D
+from dataset.dataset import Dataset
 from train import train_epoch
 from validation import val_epoch
 
