@@ -24,7 +24,7 @@ from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 from opt import parse_opts
-from model.model import C3D
+from model.model import Net
 from dataset.dataset import Dataset
 from train import train_epoch
 from validation import val_epoch
@@ -58,14 +58,14 @@ if __name__ == '__main__':
 
 
 
-    train_dataset = Dataset(train_data_path, opt.annotation_path, opt.labels_path, opt.batch_size)
+    train_dataset = Dataset(train_data_path, opt.annotation_path, opt.labels_path)
     train_loader  = torch.utils.data.DataLoader(train_dataset,
                                                 batch_size=opt.batch_size,
                                                 shuffle=False,
                                                 num_workers=16,
                                                 pin_memory=True)
     
-    validation_dataset = Dataset(validation_data_path, opt.annotation_path, opt.labels_path, opt.batch_size)
+    validation_dataset = Dataset(validation_data_path, opt.annotation_path, opt.labels_path)
     validation_loader  = torch.utils.data.DataLoader(validation_dataset,
                                                 batch_size=opt.batch_size,
                                                 shuffle=False,
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     writer_val   = SummaryWriter(log_dir=os.path.join(opt.log_learning_path, 'val'))
 
 
-    model = C3D()
+    model = Net()
 
     device = opt.device
     if opt.is_parallel:

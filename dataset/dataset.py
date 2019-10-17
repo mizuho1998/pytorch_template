@@ -9,7 +9,8 @@ import random
 import csv
 from tqdm import tqdm
 
-from dataset import imageTransform 
+from dataset.imageTransform import imageTransform 
+
 
 class Dataset(data.Dataset):
     
@@ -28,11 +29,30 @@ class Dataset(data.Dataset):
 
         return sample, target
 
+
     def __len__(self):
         return len(self.data)
 
+
+    def loadLabel(self, path):
+        labels = {}
+        with open(path) as f:
+            reader = csv.reader(f)
+
+            label_name = []
+            label_num  = []
+
+            for row in reader:
+                label_name.append(row[0])
+                label_num.append(int(row[1]))
+                labels = {k:v for k, v in zip(label_name, label_num)}
+
+          return labels
+
+
     def makeDataset(self, data_path, anotation_path, label_path):
         dataset = []
+        labels  = self.loadLabel(label_path)
 
         # dataset = [{
         #     'path':,
@@ -45,13 +65,14 @@ class Dataset(data.Dataset):
 
     def getWindow(self, path, s_frame):
         window = []
+        it = imageTransform()
 
         for i in range(self.window_len):
             img_path = os.path.join(path, 'image_{:05}.jpg'.format(s_frame + i))
-            clip = imageTransform.loadImage(img_path)
-            clip = imageTransform.cropImage(clip)
-            clip = imageTransform.resizeImage(clip)
-            clip = imageTransform.toTensor(clip)
+            clip = it.loadImage(img_path)
+            clip = it.cropImage(clip)
+            clip = it.resizeImage(clip)
+            clip = it.toTensor(clip)
             window.append(clip)
 
         window = torch.stack(window, 0).permute(1, 0, 2, 3)
@@ -63,8 +84,4 @@ class Dataset(data.Dataset):
         path = data['path']
 
         return self.getWindow(path, 0)
-
-
-
-
 

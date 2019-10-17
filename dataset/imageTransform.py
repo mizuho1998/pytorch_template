@@ -6,6 +6,7 @@ import numpy as np
 class imageTransform():
     
     def __init__():
+        pass
 
 
     def loadImage(self, path):
@@ -40,7 +41,7 @@ class imageTransform():
         return img_crop
 
 
-    def resizeImage(self, img, size=(128,128)):
+    def resizeImage(self, img, size=(224,224)):
         """
         Args:
             img (PIL.Image):
@@ -54,7 +55,7 @@ class imageTransform():
     def toTensor(self, pic):
         """
         Args:
-            pic (PIL.Image or numpy.ndarray): Image to be converted to tensor.
+        pic (PIL.Image or numpy.ndarray): Image to be converted to tensor.
         Returns:
             Tensor: Converted image.
         """
@@ -69,8 +70,10 @@ class imageTransform():
         if pic.mode == 'I':
             img = torch.from_numpy(np.array(pic, np.int32, copy=False))
         elif pic.mode == 'I;16':
+            img = torch.from_numpy(np.array(pic, np.int16, copy=False))
         else:
             img = torch.ByteTensor(torch.ByteStorage.from_buffer(pic.tobytes()))
+
         # PIL image mode: 1, L, P, I, F, RGB, YCbCr, RGBA, CMYK
         if pic.mode == 'YCbCr':
             nchannel = 3
@@ -78,10 +81,12 @@ class imageTransform():
             nchannel = 1
         else:
             nchannel = len(pic.mode)
+
         img = img.view(pic.size[1], pic.size[0], nchannel)
         # put it from HWC to CHW format
         # yikes, this transpose takes 80% of the loading time/CPU
         img = img.transpose(0, 1).transpose(0, 2).contiguous()
+
         if isinstance(img, torch.ByteTensor):
             return img.float().div(255)
         else:
