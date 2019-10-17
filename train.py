@@ -1,7 +1,6 @@
-import torch
 import os
-import sys
 from tqdm import tqdm
+import torch
 
 from utils import AverageMeter, accuracy
 
@@ -15,7 +14,6 @@ def train_epoch(epoch, data_loader, model, criterion, optimizer, opt, writer):
     accuracies_top_5 = AverageMeter()
 
     for i, data in enumerate(tqdm(data_loader)):
-
         inputs, labels = data[0].to(opt.device), data[1].to(opt.device)
         outputs = model(inputs)
 
@@ -29,7 +27,6 @@ def train_epoch(epoch, data_loader, model, criterion, optimizer, opt, writer):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
 
         writer.add_scalar("loss/loss", losses.val,  (epoch - 1) * len(data_loader) + (i + 1))
         writer.add_scalar("acc/acc top1", accuracies_top_1.val,  (epoch - 1) * len(data_loader) + (i + 1))

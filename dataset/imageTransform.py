@@ -1,33 +1,20 @@
 import torch
+import PIL
 from PIL import Image
 import numpy as np
 
 
-class imageTransform():
+class ImageTransform():
     
     def __init__():
         pass
 
-
-    def loadImage(self, path):
-        """
-        Args:
-            path (str): path to image
-        Returns:
-            PIL.Image: 
-        """
-
+    @classmethod
+    def load(cls, path: str) -> PIL.Image:
         return Image.open(path)
 
-
-    def cropImage(self, img):
-        """
-        Args:
-            img (PIL.Image): crop image (crop center)
-        Returns:
-            PIL.Image: croped image.
-        """
-
+    @classmethod
+    def crop(cls, img: PIL.Image) -> PIL.Image:
         w, h = img.size
         # crop center
         center_w = w / 2
@@ -40,26 +27,12 @@ class imageTransform():
 
         return img_crop
 
-
-    def resizeImage(self, img, size=(224,224)):
-        """
-        Args:
-            img (PIL.Image):
-        Returns:
-            PIL.Image: 
-        """
-
+    @classmethod
+    def resize(cls, img: PIL.Image, size: tuple = (224,224)) -> PIL.Image:
         return img.resize(size)
 
-
-    def toTensor(self, pic):
-        """
-        Args:
-        pic (PIL.Image or numpy.ndarray): Image to be converted to tensor.
-        Returns:
-            Tensor: Converted image.
-        """
-
+    @classmethod
+    def toTensor(cls, pic: PIL.Image) -> torch.tensor:
         if isinstance(pic, np.ndarray):
             # handle numpy array
             img = torch.from_numpy(pic.transpose((2, 0, 1)))

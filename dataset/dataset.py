@@ -9,7 +9,7 @@ import random
 import csv
 from tqdm import tqdm
 
-from dataset.imageTransform import imageTransform 
+from .imageTransform import ImageTransform 
 
 
 class Dataset(data.Dataset):
@@ -69,9 +69,9 @@ class Dataset(data.Dataset):
 
         for i in range(self.window_len):
             img_path = os.path.join(path, 'image_{:05}.jpg'.format(s_frame + i))
-            clip = it.loadImage(img_path)
-            clip = it.cropImage(clip)
-            clip = it.resizeImage(clip)
+            clip = it.load(img_path)
+            clip = it.crop(clip)
+            clip = it.resize(clip)
             clip = it.toTensor(clip)
             window.append(clip)
 

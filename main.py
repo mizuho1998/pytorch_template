@@ -56,8 +56,6 @@ if __name__ == '__main__':
     print('log_learning_path:    ', opt.log_learning_path)
     print('pretrained_model_path:', opt.pretrained_model_path)
 
-
-
     train_dataset = Dataset(train_data_path, opt.annotation_path, opt.labels_path)
     train_loader  = torch.utils.data.DataLoader(train_dataset,
                                                 batch_size=opt.batch_size,
@@ -74,7 +72,6 @@ if __name__ == '__main__':
     writer_train = SummaryWriter(log_dir=os.path.join(opt.log_learning_path, 'train'))
     writer_val   = SummaryWriter(log_dir=os.path.join(opt.log_learning_path, 'val'))
 
-
     model = Net()
 
     device = opt.device
@@ -88,16 +85,12 @@ if __name__ == '__main__':
     else:
         opt.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    print(opt.device)
-
-
     if opt.pretrained_model_path != '':
         print("load from ", opt.pretrained_model_path)
         pretrain_log = torch.load(opt.pretrained_model_path, map_location=opt.device) 
         model.load_state_dict(pretrain_log['state_dict']) 
         print("pre-tran states are loaded") 
        
-
     model.to(opt.device)
 
     criterion = nn.CrossEntropyLoss()
@@ -113,7 +106,6 @@ if __name__ == '__main__':
         writer_val.add_scalar("acc/acc top1", val_acc_top_1, epoch * len(train_loader) )
         writer_val.add_scalar("acc/acc top5", val_acc_top_5, epoch * len(train_loader) )
         
-
     writer_train.close()
     writer_val.close()
 

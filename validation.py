@@ -1,9 +1,7 @@
-import torch
-import sys
 from tqdm import tqdm
+import torch
 
 from utils import AverageMeter, accuracy
-
 
 def val_epoch(epoch, data_loader, model, criterion, opt, writer):
 
