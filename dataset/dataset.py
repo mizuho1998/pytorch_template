@@ -9,18 +9,18 @@ import random
 import csv
 from tqdm import tqdm
 
-from .imageTransform import ImageTransform 
+from .imageTransform import ImageTransform
 
 
 class Dataset(data.Dataset):
-    
+
     def __init__(self, data_path, anotation_path, label_path, class_num=200):
         self.data_path = data_path
         self.anotation_path = anotation_path
         self.label_path = label_path
         self.class_num = class_num
         self.data = self.makeDataset(self.data_path, self.anotation_path, self.label_path, self.batch_size)
-        
+
 
     def __getitem__(self, index):
         data   = self.data[index]
@@ -45,7 +45,7 @@ class Dataset(data.Dataset):
             for row in reader:
                 label_name.append(row[0])
                 label_num.append(int(row[1]))
-                labels = {k:v for k, v in zip(label_name, label_num)}
+                labels = {k: v for k, v in zip(label_name, label_num)}
 
           return labels
 
@@ -84,4 +84,3 @@ class Dataset(data.Dataset):
         path = data['path']
 
         return self.getWindow(path, 0)
-

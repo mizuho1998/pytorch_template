@@ -2,7 +2,7 @@
 python main.py --root_path /path/to/data/root --video_path jpg \
                --annotation_path annotation.json --label_path label.csv \
                --log_path result/log \
-               --checkpoint 10 --epochs 200 --batch_size 8 --device 0 
+               --checkpoint 10 --epochs 200 --batch_size 8 --device 0
 
 
 /path/to/data/root
@@ -31,6 +31,8 @@ from validation import val_epoch
 
 
 
+
+
 if __name__ == '__main__':
     opt = parse_opts()
     if opt.root_path != '':
@@ -46,7 +48,7 @@ if __name__ == '__main__':
 
         train_data_path = os.path.join(opt.video_path, 'train')
         validation_data_path = os.path.join(opt.video_path, 'validation')
-    
+
     print('video_path:           ', opt.video_path)
     print('train_data_path:      ', train_data_path)
     print('validation_data_path: ', validation_data_path)
@@ -62,7 +64,7 @@ if __name__ == '__main__':
                                                 shuffle=False,
                                                 num_workers=16,
                                                 pin_memory=True)
-    
+
     validation_dataset = Dataset(validation_data_path, opt.annotation_path, opt.labels_path)
     validation_loader  = torch.utils.data.DataLoader(validation_dataset,
                                                 batch_size=opt.batch_size,
@@ -79,7 +81,7 @@ if __name__ == '__main__':
         opt.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         if torch.cuda.device_count() > 1:
             model = nn.DataParallel(model)
-            print("multi GPUs: ", torch.cuda.device_count())    
+            print("multi GPUs: ", torch.cuda.device_count())
     elif device != "":
         opt.device = "cuda:" + str(device)
     else:
@@ -87,10 +89,10 @@ if __name__ == '__main__':
 
     if opt.pretrained_model_path != '':
         print("load from ", opt.pretrained_model_path)
-        pretrain_log = torch.load(opt.pretrained_model_path, map_location=opt.device) 
-        model.load_state_dict(pretrain_log['state_dict']) 
-        print("pre-tran states are loaded") 
-       
+        pretrain_log = torch.load(opt.pretrained_model_path, map_location=opt.device)
+        model.load_state_dict(pretrain_log['state_dict'])
+        print("pre-tran states are loaded")
+
     model.to(opt.device)
 
     criterion = nn.CrossEntropyLoss()
@@ -102,13 +104,11 @@ if __name__ == '__main__':
         train_epoch(epoch, train_loader, model, criterion, optimizer, opt, writer_train)
 
         val_loss, val_acc_top_1, val_acc_top_5 = val_epoch(epoch, validation_loader, model, criterion, opt)
-        writer_val.add_scalar("loss/loss", val_loss, epoch * len(train_loader) )  
+        writer_val.add_scalar("loss/loss", val_loss, epoch * len(train_loader))
         writer_val.add_scalar("acc/acc top1", val_acc_top_1, epoch * len(train_loader) )
         writer_val.add_scalar("acc/acc top5", val_acc_top_5, epoch * len(train_loader) )
-        
+
     writer_train.close()
     writer_val.close()
 
     print('Finished Training')
-   
-
