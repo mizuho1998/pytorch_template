@@ -44,20 +44,20 @@ def parse_opts():
         type=int,
         help='Number of total epochs to run')
     parser.add_argument(
-        '--device', 
-        default="", 
-        type=str, 
+        '--device',
+        default="",
+        type=str,
         help='gpu number you use')
     parser.add_argument(
-        '--is_parallel', 
+        '--is_parallel',
         default=False,
-        type=bool, 
+        type=bool,
         help='')
     parser.add_argument(
-        '--batch_size', 
-        default=8, 
-        type=int, 
+        '--batch_size',
+        default=8,
+        type=int,
         help='Batch Size')
 
     args = parser.parse_args()
-
+    return args
