@@ -20,6 +20,12 @@ You can install the modules in the file with the following command.
 
 ## Usage
 
-`python main.py .....`
+#### train
+
+`python main.py ....`
+
+#### test
+
+`python main_test.py ....`
 
 ## Install
