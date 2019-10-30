@@ -18,6 +18,8 @@ You can install the modules in the file with the following command.
 `pip install -r requirements.txt`
 
 
+## Install
+
 ## Usage
 
 #### train
@@ -27,5 +29,3 @@ You can install the modules in the file with the following command.
 #### test
 
 `python main_test.py ....`
-
-## Install
