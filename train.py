@@ -28,25 +28,22 @@ def train_epoch(epoch, data_loader, model, criterion, optimizer, opt, writer):
         loss.backward()
         optimizer.step()
 
-        writer.add_scalar("loss/loss", losses.val,  (epoch - 1) * len(data_loader) + (i + 1))
-        writer.add_scalar("acc/acc top1", accuracies_top_1.val,  (epoch - 1) * len(data_loader) + (i + 1))
-        writer.add_scalar("acc/acc top5", accuracies_top_5.val,  (epoch - 1) * len(data_loader) + (i + 1)) 
-
+        writer.add_scalar("loss/loss", losses.val, (epoch - 1) * len(data_loader) + (i + 1))
+        writer.add_scalar("acc/acc top1", accuracies_top_1.val, (epoch - 1) * len(data_loader) + (i + 1))
+        writer.add_scalar("acc/acc top5", accuracies_top_5.val, (epoch - 1) * len(data_loader) + (i + 1))
 
     if epoch % opt.checkpoint == 0:
-        save_file_path = os.path.join(opt.log_model_path, 
+        save_file_path = os.path.join(opt.log_model_path,
                                     'save_{}.pth'.format(epoch))
 
         if opt.is_parallel:
             state = model.module.state_dict()
         else:
             state = model.state_dict()
-        
+
         states = {
             'epoch': epoch + 1,
             'state_dict': state,
             'optimizer': optimizer.state_dict(),
         }
         torch.save(states, save_file_path)
-
-

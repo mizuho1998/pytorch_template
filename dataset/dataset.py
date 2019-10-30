@@ -1,6 +1,5 @@
 import torch
 import torch.utils.data as data
-
 from PIL import Image
 import numpy as np
 import os
@@ -21,7 +20,6 @@ class Dataset(data.Dataset):
         self.class_num = class_num
         self.data = self.makeDataset(self.data_path, self.anotation_path, self.label_path, self.batch_size)
 
-
     def __getitem__(self, index):
         data   = self.data[index]
         target = self.data[index]['label']
@@ -29,10 +27,8 @@ class Dataset(data.Dataset):
 
         return sample, target
 
-
     def __len__(self):
         return len(self.data)
-
 
     def loadLabel(self, path):
         labels = {}
@@ -49,7 +45,6 @@ class Dataset(data.Dataset):
 
           return labels
 
-
     def makeDataset(self, data_path, anotation_path, label_path):
         dataset = []
         labels  = self.loadLabel(label_path)
@@ -61,7 +56,6 @@ class Dataset(data.Dataset):
         #     ...]
 
         return dataset
-
 
     def getWindow(self, path, s_frame):
         window = []
@@ -78,7 +72,6 @@ class Dataset(data.Dataset):
         window = torch.stack(window, 0).permute(1, 0, 2, 3)
 
         return window
-
 
     def loadData(self, data):
         path = data['path']

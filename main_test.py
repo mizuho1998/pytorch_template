@@ -23,8 +23,6 @@ from model import C3D
 from dataset import Dataset
 from opt import parse_opts
 from test import test
-from utils import Logger
-
 
 if __name__ == '__main__':
     opt = parse_opts()

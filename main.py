@@ -30,9 +30,6 @@ from train import train_epoch
 from validation import val_epoch
 
 
-
-
-
 if __name__ == '__main__':
     opt = parse_opts()
     if opt.root_path != '':
@@ -99,14 +96,14 @@ if __name__ == '__main__':
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
     print("trian")
-    for epoch in tqdm(range(1, opt.epochs+1)):
+    for epoch in tqdm(range(1, opt.epochs + 1)):
 
         train_epoch(epoch, train_loader, model, criterion, optimizer, opt, writer_train)
 
         val_loss, val_acc_top_1, val_acc_top_5 = val_epoch(epoch, validation_loader, model, criterion, opt)
         writer_val.add_scalar("loss/loss", val_loss, epoch * len(train_loader))
-        writer_val.add_scalar("acc/acc top1", val_acc_top_1, epoch * len(train_loader) )
-        writer_val.add_scalar("acc/acc top5", val_acc_top_5, epoch * len(train_loader) )
+        writer_val.add_scalar("acc/acc top1", val_acc_top_1, epoch * len(train_loader))
+        writer_val.add_scalar("acc/acc top5", val_acc_top_5, epoch * len(train_loader))
 
     writer_train.close()
     writer_val.close()

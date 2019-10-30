@@ -11,4 +11,3 @@ class Net(nn.Module):
     def forward(self, x):
 
         return x
-
